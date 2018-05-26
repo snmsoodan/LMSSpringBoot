@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
 import com.gcit.lms.entity.Author;
+import com.gcit.lms.entity.Book;
 
 @Component
 public class AuthorDAO extends BaseDAO<Author> implements ResultSetExtractor<List<Author>>{
@@ -42,6 +43,11 @@ public class AuthorDAO extends BaseDAO<Author> implements ResultSetExtractor<Lis
 		authorName="%"+authorName+"%";
 		
 		return mySqlTemplate.query("select * from tbl_author where authorName like ?",new Object[] {authorName},this);	
+	}
+	
+	public List<Author> ReadAuthorsByBookId(Integer bookId) throws ClassNotFoundException, SQLException 
+	{
+		return mySqlTemplate.query("select * from tbl_author where authorId in(select authorId from tbl_book_authors where bookId=?)",new Object[] {bookId},this);	
 	}
 	
 	

@@ -19,10 +19,13 @@ import com.gcit.lms.dao.BorrowerDAO;
 import com.gcit.lms.dao.GenreDAO;
 import com.gcit.lms.dao.LibraryBranchDAO;
 import com.gcit.lms.dao.PublisherDAO;
+import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.BookCopies;
 import com.gcit.lms.entity.BookLoans;
 import com.gcit.lms.entity.Borrower;
+import com.gcit.lms.entity.Genre;
+import com.gcit.lms.entity.Publisher;
 
 @RestController
 public class BorrowerService extends BaseController {
@@ -104,6 +107,21 @@ public class BorrowerService extends BaseController {
 	{
 			try {
 				List<Book> books=bdao.ReadBooksByBookID(bookId);
+				for(Book book:books)
+				{
+					//find all authors related to the book
+					List<Author> authors=adao.ReadAuthorsByBookId(book.getBookId());
+					book.setAuthors(authors);
+					
+					//find all genres related to the book
+					List<Genre> genres=gndao.ReadGenresByBookId(book.getBookId());
+					book.setGenres(genres);
+					
+					//find all publisher related to the book
+					List<Publisher> publishers=pdao.ReadPublisherByBookId(book.getBookId());
+					book.setPublisher(publishers.get(0));
+					
+				}
 				return books;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();

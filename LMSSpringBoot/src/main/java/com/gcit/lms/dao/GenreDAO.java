@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
+import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.Genre;
 
 @Component
@@ -35,6 +36,11 @@ public class GenreDAO extends BaseDAO<Genre> implements ResultSetExtractor<List<
 	{
 		
 		return mySqlTemplate.query("select * from tbl_genre",this);	
+	}
+	
+	public List<Genre> ReadGenresByBookId(Integer bookId) throws ClassNotFoundException, SQLException 
+	{
+		return mySqlTemplate.query("select * from tbl_genre where genre_id in(select genre_id from tbl_book_genres where bookId=?)",new Object[] {bookId},this);	
 	}
 	
 

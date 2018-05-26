@@ -105,6 +105,13 @@ public class AdminService extends BaseController {
 	{
 			try {
 				List<Publisher> publishers=pdao.ReadAllPublishers();
+				//get the books related to the publisher
+				for(Publisher pub:publishers)
+				{
+					List<Book> books=bdao.ReadBooksByPubID(pub.getPublisherId());
+					pub.setBooks(books);
+				}
+				
 				return publishers;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -118,6 +125,13 @@ public class AdminService extends BaseController {
 	{
 			try {
 				List<Author> authors=adao.ReadAllAuthors();
+				//get the books related to the author
+				for(Author auth:authors)
+				{
+					List<Book> books=bdao.ReadBooksByAuthID(auth.getAuthorId());
+					auth.setBooks(books);
+				}
+				
 				return authors;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -150,6 +164,13 @@ public class AdminService extends BaseController {
 	{
 			try {
 				List<Genre> genres=gndao.ReadAllGenres();
+				//get the books related to the genre
+				for(Genre genre:genres)
+				{
+					List<Book> books=bdao.ReadBooksByGenreID(genre.getGenreId());
+					genre.setBooks(books);
+				}
+				
 				return genres;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -164,6 +185,23 @@ public class AdminService extends BaseController {
 	{
 			try {
 				List<Book> books=bdao.ReadAllBooks();
+				for(Book book:books)
+				{
+					//find all authors related to the book
+					List<Author> authors=adao.ReadAuthorsByBookId(book.getBookId());
+					book.setAuthors(authors);
+					
+					//find all genres related to the book
+					List<Genre> genres=gndao.ReadGenresByBookId(book.getBookId());
+					book.setGenres(genres);
+					
+					//find all publisher related to the book
+					List<Publisher> publishers=pdao.ReadPublisherByBookId(book.getBookId());
+					book.setPublisher(publishers.get(0));
+					
+				}
+				
+				
 				return books;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
