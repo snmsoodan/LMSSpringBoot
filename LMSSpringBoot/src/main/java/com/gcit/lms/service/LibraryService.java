@@ -58,6 +58,7 @@ public class LibraryService extends BaseController{
 			}
 	}
 	
+	
 	@Transactional
 	@RequestMapping(value="/library/readBookCopiesById",method=RequestMethod.GET,produces="application/json")
 	public List<BookCopies> readBookCopiesById(@RequestParam("bookId") Integer bookId,@RequestParam("branchId")Integer branchId) throws SQLException
@@ -71,6 +72,7 @@ public class LibraryService extends BaseController{
 		return null;
 	}
 	
+	
 	@Transactional
 	@RequestMapping(value="/library/updateBookCopies",method=RequestMethod.PUT,consumes="application/json")
 	public void updateBookCopies(@RequestBody BookCopies bookCopy) throws SQLException
@@ -81,6 +83,7 @@ public class LibraryService extends BaseController{
 				e.printStackTrace();
 			}
 	}
+	
 	
 	@Transactional
 	@RequestMapping(value="/library/updateLibraryBranch",method=RequestMethod.PUT,consumes="application/json")
@@ -93,6 +96,7 @@ public class LibraryService extends BaseController{
 			}
 	}
 	
+	
 	@Transactional
 	@RequestMapping(value="/library/deleteLibraryBranch",method=RequestMethod.DELETE,consumes="application/json")
 	public void deleteLibraryBranch(@RequestBody LibraryBranch libraryBranch) throws SQLException
@@ -104,6 +108,7 @@ public class LibraryService extends BaseController{
 			}
 	}
 	
+	
 	@Transactional
 	@RequestMapping(value="/library/saveLibraryBranch",method=RequestMethod.POST,consumes="application/json")
 	public void saveLibraryBranch(@RequestBody LibraryBranch libraryBranch) throws SQLException
@@ -114,6 +119,7 @@ public class LibraryService extends BaseController{
 				e.printStackTrace();
 			}
 	}
+	
 	
 	@Transactional
 	@RequestMapping(value="/library/readLibraryBranch",method=RequestMethod.GET,produces="application/json")
