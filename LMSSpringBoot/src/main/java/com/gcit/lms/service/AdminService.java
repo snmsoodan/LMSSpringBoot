@@ -3,7 +3,6 @@ package com.gcit.lms.service;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.junit.runner.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
