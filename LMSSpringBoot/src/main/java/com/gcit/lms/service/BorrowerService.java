@@ -1,6 +1,7 @@
 package com.gcit.lms.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,6 +144,28 @@ public class BorrowerService extends BaseController {
 	}
 	
 	@Transactional
+	@RequestMapping(value="/borrower/readBorrowerByName",method=RequestMethod.GET, produces="application/json")
+	public List<Borrower> readBorrowerByName(@RequestParam String name) throws SQLException
+	{
+			try {
+				List<Borrower> borrowers=new ArrayList<Borrower>();
+				if(name.equals("undefined"))
+				{
+					borrowers=brdao.ReadAllBorrowers();
+				}
+				else {
+					System.out.println("not null "+name);
+					borrowers=brdao.ReadBorrowersByName(name);
+				}
+				
+				return borrowers;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	@Transactional
 	@RequestMapping(value="/borrower/changeDueDate",method=RequestMethod.PUT, consumes="application/json")
 	public void changeDueDate(@RequestBody BookLoans bookloan) throws SQLException
 	{
@@ -165,7 +188,7 @@ public class BorrowerService extends BaseController {
 	}
 	
 	@Transactional
-	@RequestMapping(value="/borrower/deleteBorrower",method=RequestMethod.DELETE, consumes="application/json")
+	@RequestMapping(value="/borrower/deleteBorrower",method=RequestMethod.POST, consumes="application/json")
 	public void deleteBorrower(@RequestBody Borrower borrower) throws SQLException
 	{
 			try {

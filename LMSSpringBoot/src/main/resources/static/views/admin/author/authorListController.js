@@ -1,7 +1,9 @@
-lmsApp.controller("authorController",function($scope,$http,lmsFactory,lmsConstants,$location,$window){
+lmsApp.controller("authorController",function($scope,$http,lmsFactory,lmsConstants,$location,$window,Pagination){
 		
 			lmsFactory.getAll(lmsConstants.GET_ALL_AUTHORS).then(function(data){
 				$scope.authors=data;
+				$scope.pagination = Pagination.getNew(10);
+				$scope.pagination.numPages = Math.ceil($scope.authors.length/$scope.pagination.perPage);
 			})
 			
 			
@@ -58,6 +60,14 @@ lmsApp.controller("authorController",function($scope,$http,lmsFactory,lmsConstan
 						$window.location="#/authorList";
 					})
 				
+				})
+			}
+			
+			$scope.searchAuthors = function(authorName){
+				lmsFactory.getAll(lmsConstants.GET_AUTHORS_BY_NAME+authorName).then(function(data){
+					$scope.authors = data;
+					$scope.pagination = Pagination.getNew(10);
+					$scope.pagination.numPages = Math.ceil($scope.authors.length/$scope.pagination.perPage);
 				})
 			}
 			

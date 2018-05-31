@@ -1,6 +1,7 @@
 package com.gcit.lms.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,6 @@ public class AdminService extends BaseController {
 	@RequestMapping(value="/admin/saveAuthor", method=RequestMethod.POST,consumes="application/json")
 	public void saveAuthor(@RequestBody Author author) throws SQLException
 	{
-		System.out.println(author.getAuthorId());
 			try {
 				int authorId=adao.addAuthorWithId(author);
 				
@@ -148,6 +148,35 @@ public class AdminService extends BaseController {
 	}
 	
 
+	
+	@Transactional
+	@RequestMapping(value="/admin/readAuthorsByName",method=RequestMethod.GET,produces="application/json")
+	public List<Author> readAuthorsByName(@RequestParam String authorName) throws SQLException
+	{
+			try {
+				
+				List<Author> authors=new ArrayList<Author>();
+				if(authorName.equals("undefined"))
+				{
+					authors=adao.ReadAllAuthors();
+				}
+				else {
+					 authors=adao.readAuthorsByName(authorName);
+				}
+				
+				//get the books related to the author
+				for(Author auth:authors)
+				{
+					List<Book> books=bdao.ReadBooksByAuthID(auth.getAuthorId());
+					auth.setBooks(books);
+				}
+				
+				return authors;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
 	
 
 	

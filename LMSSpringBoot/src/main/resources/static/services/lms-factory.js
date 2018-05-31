@@ -2,6 +2,7 @@ lmsApp.factory("lmsFactory",function($http){
 	return{
 		
 		getAll: function(url){
+			console.log(url);
 			var returnList={};
 			return $http.get(url).success(function(data){
 				returnList=data;

@@ -1,15 +1,15 @@
-<div class="container" ng-controller="authorController">
+<div class="container" ng-controller="borrowerController">
 
 
-	<h1>List of Authors in GCIT LMS</h1>
+	<h1>List of Borrowers in GCIT LMS</h1>
 	<div class="col-md-4 mb-3">
 		<label for="validationCustomUsername">Search by Author Names</label>
 		<div class="input-group">
 			<input type="text" class="form-control" id="validationCustomUsername"
-				ng-model="searchString" placeholder="Author Name"
+				ng-model="searchString" placeholder="Borrower Name"
 				aria-describedby="inputGroupPrepend" required
-				ng-change="searchAuthors(searchString)">
-			<div class="invalid-feedback">Please choose a author name.</div>
+				ng-change="searchBorrowers(searchString)">
+			<div class="invalid-feedback">Please choose a borrower name.</div>
 		</div>
 	</div>
 
@@ -29,7 +29,7 @@
 	<button class="button pull-right" data-toggle="modal"
 		data-target="#addModal"
 		style="margin-left: 1114px; background-color: orange">
-		<span>Add Author</span>
+		<span>Add Borrower</span>
 	</button>
 
 	<!-- Modal -->
@@ -38,7 +38,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle">Add Author</h5>
+					<h5 class="modal-title" id="exampleModalLongTitle">Add Borrower</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -46,19 +46,21 @@
 				</div>
 				<div class="modal-body">
 					<div class="container">
-						Enter Author Name:<br /> <input type="text" maxlength="45"
-							ng-model="authorName" value="author.authorName"> <br />
-						Select Books Written By Author <select class="custom-select"
-							name="multipleSelect" id="multipleSelect"
-							ng-model="selectedBooks" multiple
-							ng-options="Title.title for Title in books"></select>
+						Enter Borrower Name:<br /> 
+						<input type="text" maxlength="45" ng-model="name"> <br /><br />
+						
+						Enter Address:<br /> 
+						<input type="text" maxlength="45" ng-model="address" > <br /><br />
+						
+						Enter Phone No. :<br /> 
+						<input type="text" maxlength="45" ng-model="phone"> <br />
 
 
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary"
-						ng-click="addAuthor(authorName)">Save</button>
+						ng-click="addBorrower(name,address,phone)">Save</button>
 				</div>
 			</div>
 		</div>
@@ -69,9 +71,10 @@
 		<thead>
 			<tr class="table-primary">
 				<th scope="col">#</th>
-				<th scope="col">Author Name</th>
-				<th scope="col">Books</th>
-				<th scope="col">Edit</th>
+				<th scope="col">Borrower Name</th>
+				<th scope="col">Address</th>
+				<th scope="col">PhNo.</th>
+				<th scope="col">Edit.</th>
 				<th scope="col">Delete</th>
 			</tr>
 		</thead>
@@ -82,14 +85,14 @@
 		<tbody>
 
 			<tr
-				ng-repeat="a in authors| startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+				ng-repeat="b in borrowers| startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
 				<th scope="row">{{$index+1}}</th>
-				<td>{{a.authorName}}</td>
-				<td><span ng-repeat="b in a.books"> {{b.title}} <span
-						ng-if="!$last">|</span></span></td>
+				<td>{{b.name}}</td>
+				<td>{{b.address}}</td>
+				<td>{{b.phone}}</td>
 				<td><button class="btn btn-primary" data-toggle="modal"
-						data-target="#editModal" ng-click="editAuthor(a)">Edit</button></td>
-				<td><button ng-click="deleteAuthor(a)" class="btn btn-danger">Delete</button></td>
+						data-target="#editModal" ng-click="editBorrower(b)">Edit</button></td>
+				<td><button ng-click="deleteBorrower(b)" class="btn btn-danger">Delete</button></td>
 			</tr>
 
 		</tbody>
@@ -103,7 +106,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle">Update Author Details</h5>
+					<h5 class="modal-title" id="exampleModalLongTitle">Update Borrower Details</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -111,16 +114,21 @@
 				</div>
 				<div class="modal-body">
 					<div class="container">
-						Enter Author Name to be edited:<br /> <input type="text"
-							maxlength="45" ng-model="author.authorName"
-							value="author.authorName">
+						Enter Borrower Name to be edited:<br /> 
+						<input type="text" maxlength="45" ng-model="borrower.name" value="borrower.name"><br /><br />
+						
+						Enter Address to be edited:<br /> 
+						<input type="text" maxlength="45" ng-model="borrower.address" value="borrower.address"><br /><br />
+						
+						Enter PhNo. to be edited:<br /> 
+						<input type="text" maxlength="45" ng-model="borrower.phone" value="borrower.phone">
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						ng-click="listAuthors()" data-dismiss="modal">Close</button>
+						ng-click="listBorrowers()" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary"
-						ng-click="updateAuthor()">Save changes</button>
+						ng-click="updateBorrower()">Save changes</button>
 				</div>
 			</div>
 		</div>
