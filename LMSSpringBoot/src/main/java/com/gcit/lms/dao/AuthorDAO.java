@@ -1,11 +1,16 @@
 package com.gcit.lms.dao;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.gcit.lms.entity.Author;
@@ -18,6 +23,21 @@ public class AuthorDAO extends BaseDAO<Author> implements ResultSetExtractor<Lis
 	public void addAuthor(Author author) throws SQLException, ClassNotFoundException
 	{
 		mySqlTemplate.update("insert into tbl_author (authorName) values(?)",new Object[] {author.getAuthorName()});
+	}
+	
+	public Integer addAuthorWithId(Author author) throws SQLException, ClassNotFoundException
+	{
+		String insertSql="insert into tbl_author (authorName) values(?)";
+		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+		String id_column = "authorId";
+		mySqlTemplate.update(con -> {
+			PreparedStatement ps = con.prepareStatement(insertSql, new String[] { id_column });
+			ps.setString(1, author.getAuthorName());
+			return ps;
+		}, keyHolder);
+		
+//		Logger.info("Id is {}", keyHolder.getKey().intValue());
+		return keyHolder.getKey().intValue();
 	}
 	
 	public void updateAuthor(Author author) throws SQLException, ClassNotFoundException

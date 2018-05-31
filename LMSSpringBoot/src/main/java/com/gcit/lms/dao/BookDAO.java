@@ -26,7 +26,7 @@ public class BookDAO extends BaseDAO<Book> implements ResultSetExtractor<List<Bo
 	public Integer addBookWithId(Book book) throws SQLException, ClassNotFoundException
 	{
 //		return saveWithId("insert into tbl_book (title,pubId) values(?,?)",new Object[] {book.getTitle(),book.getPublisher().getPublisherId()});
-		String insertSql="insert into tbl_book (title,pubId) values(?,?)";
+		String insertSql="insert into tbl_book (title) values(?)";
 		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 		String id_column = "bookId";
 		mySqlTemplate.update(con -> {

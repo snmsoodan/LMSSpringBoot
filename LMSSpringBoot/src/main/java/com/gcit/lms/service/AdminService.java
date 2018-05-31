@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gcit.lms.dao.AuthorDAO;
@@ -44,8 +45,15 @@ public class AdminService extends BaseController {
 	@RequestMapping(value="/admin/saveAuthor", method=RequestMethod.POST,consumes="application/json")
 	public void saveAuthor(@RequestBody Author author) throws SQLException
 	{
+		System.out.println(author.getAuthorId());
 			try {
-				adao.addAuthor(author);
+				int authorId=adao.addAuthorWithId(author);
+				
+				for(Book b : author.getBooks())
+				{
+					bdao.addBookAuthors(b.getBookId(), authorId);
+				}
+				
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -234,7 +242,7 @@ public class AdminService extends BaseController {
 	}
 	
 	
-
+	
 	
 	
 	@Transactional
@@ -284,8 +292,20 @@ public class AdminService extends BaseController {
 			}
 	}
 	
+//	@Transactional
+//	@RequestMapping(value="/admin/deleteAuthor",method=RequestMethod.DELETE,produces="application/json")
+//	public void deleteAuthor(@RequestParam Integer authorId) throws SQLException
+//	{
+//		System.out.println(authorId);
+//			try {
+//				adao.deleteAuthor(authorId);
+//			} catch (ClassNotFoundException e) {
+//				e.printStackTrace();
+//			}
+//	}
+	
 	@Transactional
-	@RequestMapping(value="/admin/deleteAuthor",method=RequestMethod.DELETE,produces="application/json")
+	@RequestMapping(value="/admin/deleteAuthor",method=RequestMethod.POST,produces="application/json")
 	public void deleteAuthor(@RequestBody Author author) throws SQLException
 	{
 			try {

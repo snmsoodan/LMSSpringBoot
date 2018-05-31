@@ -1,0 +1,75 @@
+
+<script data-require="angular.js@*" data-semver="1.4.1"
+	src="http://code.angularjs.org/1.4.1/angular.js"></script>
+<script data-require="angular-route.js@*" data-semver="1.4.1"
+	src="http://code.angularjs.org/1.4.1/angular-route.js"></script>
+<script data-require="angular-route.js@*" data-semver="1.4.1"
+	src="http://code.angularjs.org/1.4.1/angular-cookies.js"></script>
+    
+<script src="./src/app.js"></script>
+
+<html lang="en" ng-app="lmsApp">
+
+
+<head>
+<link href="./css/style.css" rel="stylesheet"/>
+<script src="./views/admin/author/authorListController.js"></script>
+<script src="./services/lms-factory.js"></script>
+<script src="./common/lms-constants.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="./images/favicon1.png">
+
+    <title>LMS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./template_files/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="./template_files/pricing.css" rel="stylesheet">
+    
+    
+    
+    
+  </head>
+
+  <body data-gr-c-s-loaded="true">
+
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+      <a  class="my-0 mr-md-auto font-weight-normal" href="#/home"><h5>Library Management System </h5></a>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="#/admin">Admin</a>
+        <a class="p-2 text-dark" href="#/librarian">Librarian</a>
+        <a class="p-2 text-dark" href="#/borrower">Borrower</a>
+      </nav>
+      <span> </span>
+    </div>
+	
+    
+	<div>
+	<section data-ng-view="" id="content" class="animate-fade-up"></section>
+	</div>
+	
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./template_files/jquery-3.3.1.slim.min.js.download" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="./template_files/popper.min.js.download"></script>
+    <script src="./template_files/bootstrap.min.js.download"></script>
+    <script src="./template_files/holder.min.js.download"></script>
+    <script>
+      Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+      });
+    </script>
+  
+
+</body></html>

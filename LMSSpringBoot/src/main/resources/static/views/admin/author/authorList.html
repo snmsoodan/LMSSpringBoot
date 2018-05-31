@@ -1,0 +1,95 @@
+<div class="container" ng-controller="authorController">
+
+<button class="button pull-right" data-toggle="modal" data-target="#addModal"
+		style="margin-left:1114px;background-color:orange"><span>Add Author</span></button>
+
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	<div class="container">
+						Enter Author Name:<br /> 
+						<input type="text"	maxlength="45" ng-model="authorName"	value="author.authorName">
+						<br />
+						Select Books Written By Author
+						
+						
+     						 <select class="custom-select" name="multipleSelect" id="multipleSelect" ng-model="selectedBooks" multiple ng-options="Title.title for Title in books"></select>
+    					
+												
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="addAuthor(authorName)">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<h2>List of Authors in GCIT LMS</h2>
+<table class="table" style="width:1300">
+  <thead>
+    <tr class="table-primary">
+      <th scope="col">#</th>
+      <th scope="col">Author Name</th>
+      <th scope="col">Books</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  
+  
+  
+  
+  <tbody>
+    
+    <tr ng-repeat="a in authors">
+      <th scope="row">{{$index+1}}</th>
+      <td>{{a.authorName}}</td>
+      <td>
+      <span ng-repeat="b in a.books"> {{b.title}} <span ng-if="!$last">|</span></span>
+      </td>
+      <td><button  class="btn btn-primary" data-toggle="modal" data-target="#editModal" 
+      			ng-click="editAuthor(a)">Edit</button></td>
+	  <td><button ng-click="deleteAuthor(a)"  class="btn btn-danger" >Delete</button></td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	<div class="container">
+						Enter Author Name to be edited:<br /> 
+						<input type="text"	maxlength="45" ng-model="author.authorName"	value="author.authorName">
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" ng-click="listAuthors()" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="updateAuthor()" >Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
