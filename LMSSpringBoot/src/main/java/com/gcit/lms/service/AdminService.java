@@ -127,6 +127,36 @@ public class AdminService extends BaseController {
 			return null;
 	}
 	
+	
+	@Transactional
+	@RequestMapping(value="/admin/readPublishersByName",method=RequestMethod.GET,produces="application/json")
+	public List<Publisher> readPublisherByNme(@RequestParam String name) throws SQLException
+	{
+			try {
+				
+				List<Publisher> publishers=new ArrayList<Publisher>();
+				if(name.equals("undefined"))
+				{
+					publishers=pdao.ReadAllPublishers();
+				}
+				else {
+					publishers=pdao.ReadAllPublishersByName(name);
+				}
+				
+				//get the books related to the publisher
+				for(Publisher pub:publishers)
+				{
+					List<Book> books=bdao.ReadBooksByPubID(pub.getPublisherId());
+					pub.setBooks(books);
+				}
+				
+				return publishers;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			return null;
+	}
+	
 	@Transactional
 	@RequestMapping(value="/admin/readAuthors",method=RequestMethod.GET,produces="application/json")
 	public List<Author> readAuthor() throws SQLException
@@ -300,7 +330,7 @@ public class AdminService extends BaseController {
 	
 
 	@Transactional
-	@RequestMapping(value="/admin/deletePublisher",method=RequestMethod.DELETE,produces="application/json")
+	@RequestMapping(value="/admin/deletePublisher",method=RequestMethod.POST,produces="application/json")
 	public void deletePublisher(@RequestBody Publisher publisher) throws SQLException
 	{
 			try {

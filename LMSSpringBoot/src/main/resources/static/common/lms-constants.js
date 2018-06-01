@@ -12,6 +12,11 @@ lmsApp.constant("lmsConstants",{
 	ADD_BORROWER: "http://localhost:8080/lms/borrower/saveBorrower",
 	GET_BORROWERS_BY_NAME: "http://localhost:8080/lms/borrower/readBorrowerByName?name=",
 	
+	GET_ALL_PUBLISHERS: "http://localhost:8080/lms/admin/readPublishers",
+	DELETE_PUBLISHER: "http://localhost:8080/lms/admin/deletePublisher",
+	UPDATE_PUBLISHER: "http://localhost:8080/lms/admin/updatePublisher",
+	ADD_PUBLISHER: "http://localhost:8080/lms/admin/savePublisher",
+	GET_PUBLISHERS_BY_NAME: "http://localhost:8080/lms/admin/readPublishersByName?name=",
 	
 	GET_ALL_BOOKS: "http://localhost:8080/lms/admin/readBooks",
 	
