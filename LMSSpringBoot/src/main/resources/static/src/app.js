@@ -30,5 +30,12 @@ lmsApp.config(["$routeProvider",function($routeProvider){
 		templateUrl: "./views/librarian/libraryBranch/libraryBranchList.html"
 	})
 	
+	.when("/bookList",{
+		templateUrl: "./views/admin/book/bookList.html"
+	})
+	
+	.when("/genreList",{
+		templateUrl: "./views/admin/genre/genreList.html"
+	})
 	
 }])

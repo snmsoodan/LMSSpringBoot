@@ -25,6 +25,17 @@ lmsApp.constant("lmsConstants",{
 	GET_BRANCHES_BY_NAME: "http://localhost:8080/lms//library/readLibraryBranchesByName?name=",
 	
 	GET_ALL_BOOKS: "http://localhost:8080/lms/admin/readBooks",
+	DELETE_BOOKS: "http://localhost:8080/lms/admin/deleteBook",
+	UPDATE_BOOK: "http://localhost:8080/lms/admin/updateBook",
+	ADD_BOOK: "http://localhost:8080/lms/admin/saveBook",
+	GET_BOOKS_BY_NAME: "http://localhost:8080/lms/admin/readBooksByName?name=",
+	
+	
+	GET_ALL_GENRES: "http://localhost:8080/lms/admin/readGenres",
+	DELETE_GENRES: "http://localhost:8080/lms/admin/deleteGenre",
+	UPDATE_GENRE: "http://localhost:8080/lms/admin/updateGenre",
+	ADD_GENRE: "http://localhost:8080/lms/admin/saveGenre",
+	GET_BOOKS_BY_NAME: "http://localhost:8080/lms/admin/readGenresByName?name=",
 	
 	
 	ADD_BOOK_COPY: "http://localhost:8080/lms/library/saveBookCopy",

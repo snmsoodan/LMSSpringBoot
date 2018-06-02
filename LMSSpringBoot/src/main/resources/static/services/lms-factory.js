@@ -20,7 +20,6 @@ lmsApp.factory("lmsFactory",function($http){
 		},
 		
 		saveObject: function(url,object){
-			console.log(object);
 			return $http.post(url,object);
 		},
 		

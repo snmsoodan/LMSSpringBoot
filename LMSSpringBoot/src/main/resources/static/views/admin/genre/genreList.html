@@ -1,0 +1,129 @@
+<div class="container" ng-controller="genreController">
+
+
+	<h1>List of Genres in GCIT LMS</h1>
+	<div class="col-md-4 mb-3">
+		<label for="validationCustomUsername">Search by Author Names</label>
+		<div class="input-group">
+			<input type="text" class="form-control" id="validationCustomUsername"
+				ng-model="searchString" placeholder="Genre Name"
+				aria-describedby="inputGroupPrepend" required
+				ng-change="searchGenres(searchString)">
+			<div class="invalid-feedback">Please choose a genre name.</div>
+		</div>
+	</div>
+
+	<div class="col-md-10">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.prevPage()">&laquo;</a></li>
+			<li class="page-item"
+				ng-repeat="n in [] | range: pagination.numPages"
+				ng-class="{active: n == pagination.page}"><a class="page-link"
+				href="" ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.nextPage()">&raquo;</a></li>
+		</ul>
+	</div>
+
+	<button class="button pull-right" data-toggle="modal"
+		data-target="#addModal"
+		style="margin-left: 1114px; background-color: orange">
+		<span>Add Genre</span>
+	</button>
+
+	<!-- Modal -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Add Genre</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						Enter Genre Name:<br /> <input type="text" maxlength="45"
+							ng-model="genreName" > <br />
+						Add Books to Genre<select class="custom-select"
+							name="multipleSelect" id="multipleSelect"
+							ng-model="selectedBooks" multiple
+							ng-options="Title.title for Title in books"></select>
+
+
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						ng-click="addGenre(genreName)">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<table class="table" style="width: 1300">
+		<thead>
+			<tr class="table-primary">
+				<th scope="col">#</th>
+				<th scope="col">Genre Name</th>
+				<th scope="col">Books</th>
+				<th scope="col">Edit</th>
+				<th scope="col">Delete</th>
+			</tr>
+		</thead>
+
+
+
+
+		<tbody>
+
+			<tr
+				ng-repeat="g in genres | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+				<th scope="row">{{$index+1}}</th>
+				<td>{{g.genreName}}</td>
+				<td><span ng-repeat="b in g.books"> {{b.title}} <span
+						ng-if="!$last">|</span></span></td>
+				<td><button class="btn btn-primary" data-toggle="modal"
+						data-target="#editModal" ng-click="editGenre(g)">Edit</button></td>
+				<td><button ng-click="deleteGenre(g)" class="btn btn-danger">Delete</button></td>
+			</tr>
+
+		</tbody>
+	</table>
+
+
+
+	<!-- Modal -->
+	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Update Genre Details</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						Enter Genre Name to be edited:<br /> <input type="text"
+							maxlength="45" ng-model="genre.genreName">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						ng-click="listGenres()" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="updateGenre()">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>

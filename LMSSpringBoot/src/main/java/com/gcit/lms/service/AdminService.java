@@ -64,7 +64,13 @@ public class AdminService extends BaseController {
 	public void saveGenre(@RequestBody Genre genre) throws SQLException
 	{
 			try {
-				gndao.addGenre(genre);
+				int genreId=gndao.addGenreWithId(genre);
+				
+				for(Book b : genre.getBooks())
+				{
+					bdao.addBookGenres(b.getBookId(), genreId);
+				}
+				
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -76,6 +82,9 @@ public class AdminService extends BaseController {
 	@RequestMapping(value="/admin/saveBook",method=RequestMethod.POST,consumes="application/json")
 	public void saveBook(@RequestBody Book book) throws SQLException
 	{
+		
+				
+				
 			try {
 				Integer bookId=bdao.addBookWithId(book);
 				
@@ -247,6 +256,37 @@ public class AdminService extends BaseController {
 	
 	
 	@Transactional
+	@RequestMapping(value="/admin/readGenresByName",method=RequestMethod.GET,produces="application/json")
+	public List<Genre> readGenresByName(@RequestParam String name) throws SQLException
+	{
+			try {
+				
+				List<Genre> genres=new ArrayList<Genre>();
+				if(name.equals("undefined"))
+				{
+					genres=gndao.ReadAllGenres();
+				}
+				else {
+					genres=gndao.readGenresByName(name);
+				}
+				
+				
+				//get the books related to the genre
+				for(Genre genre:genres)
+				{
+					List<Book> books=bdao.ReadBooksByGenreID(genre.getGenreId());
+					genre.setBooks(books);
+				}
+				
+				return genres;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	
+	@Transactional
 	@RequestMapping(value="/admin/readBooks",method=RequestMethod.GET,produces="application/json")
 	public List<Book> readBook() throws SQLException
 	{
@@ -275,6 +315,51 @@ public class AdminService extends BaseController {
 			}
 		return null;
 	}
+	
+	
+	
+	@Transactional
+	@RequestMapping(value="/admin/readBooksByName",method=RequestMethod.GET,produces="application/json")
+	public List<Book> readBookByName(@RequestParam String name) throws SQLException
+	{
+			try {
+//				List<Book> books=bdao.ReadAllBooks();
+				
+				List<Book> books=new ArrayList<Book>();
+				if(name.equals("undefined"))
+				{
+					books=bdao.ReadAllBooks();
+				}
+				else {
+					books=bdao.readBooksByName(name);
+				}
+				
+				for(Book book:books)
+				{
+					//find all authors related to the book
+					List<Author> authors=adao.ReadAuthorsByBookId(book.getBookId());
+					book.setAuthors(authors);
+					
+					//find all genres related to the book
+					List<Genre> genres=gndao.ReadGenresByBookId(book.getBookId());
+					book.setGenres(genres);
+					
+					//find all publisher related to the book
+					List<Publisher> publishers=pdao.ReadPublisherByBookId(book.getBookId());
+					book.setPublisher(publishers.get(0));
+					
+				}
+				
+				
+				return books;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	
+	
 	
 	@Transactional
 	@RequestMapping(value="/admin/updatePublisher",method=RequestMethod.PUT,produces="application/json")
@@ -341,7 +426,7 @@ public class AdminService extends BaseController {
 	}
 	
 	@Transactional
-	@RequestMapping(value="/admin/deleteBook",method=RequestMethod.DELETE,produces="application/json")
+	@RequestMapping(value="/admin/deleteBook",method=RequestMethod.POST,produces="application/json")
 	public void deleteBook(@RequestBody Book book) throws SQLException
 	{
 			try {
@@ -375,7 +460,7 @@ public class AdminService extends BaseController {
 	}
 	
 	@Transactional
-	@RequestMapping(value="/admin/deleteGenre",method=RequestMethod.DELETE,produces="application/json")
+	@RequestMapping(value="/admin/deleteGenre",method=RequestMethod.POST,produces="application/json")
 	public void deleteGenre(@RequestBody Genre genre) throws SQLException
 	{
 			try {
