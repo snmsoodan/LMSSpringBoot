@@ -82,6 +82,12 @@ public class BookDAO extends BaseDAO<Book> implements ResultSetExtractor<List<Bo
 		return mySqlTemplate.query("select * from tbl_book where bookId in(select bookId from tbl_book_authors where authorId=?)",new Object[] {authId},this);	
 	}
 	
+	public List<Book> ReadBooksByBranchID(Integer branchId) throws ClassNotFoundException, SQLException 
+	{
+		return mySqlTemplate.query("select * from tbl_book where bookId in(select bookId from tbl_book_copies where branchId=?)",new Object[] {branchId},this);	
+	}
+	
+	
 	public List<Book> ReadBooksByGenreID(Integer genreId) throws ClassNotFoundException, SQLException 
 	{
 		return mySqlTemplate.query("select * from tbl_book where bookId in(select bookId from tbl_book_genres where genre_id=?)",new Object[] {genreId},this);	

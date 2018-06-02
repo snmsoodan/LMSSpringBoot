@@ -1,6 +1,7 @@
 package com.gcit.lms.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,11 @@ import com.gcit.lms.dao.BookLoansDAO;
 import com.gcit.lms.dao.GenreDAO;
 import com.gcit.lms.dao.LibraryBranchDAO;
 import com.gcit.lms.dao.PublisherDAO;
+import com.gcit.lms.entity.Author;
+import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.BookCopies;
 import com.gcit.lms.entity.LibraryBranch;
+import com.gcit.lms.entity.Publisher;
 
 @RestController
 public class LibraryService extends BaseController{
@@ -98,7 +102,7 @@ public class LibraryService extends BaseController{
 	
 	
 	@Transactional
-	@RequestMapping(value="/library/deleteLibraryBranch",method=RequestMethod.DELETE,consumes="application/json")
+	@RequestMapping(value="/library/deleteLibraryBranch",method=RequestMethod.POST,consumes="application/json")
 	public void deleteLibraryBranch(@RequestBody LibraryBranch libraryBranch) throws SQLException
 	{
 			try {
@@ -127,6 +131,47 @@ public class LibraryService extends BaseController{
 	{
 			try {
 				List<LibraryBranch> libraryBranches=lbdao.ReadAllLibraryBranches();
+				
+				//get the books in the branch
+				for(LibraryBranch branch: libraryBranches)
+				{
+					List<Book> books=bdao.ReadBooksByBranchID(branch.getBranchId());
+					branch.setBooks(books);
+				}
+				
+				
+				return libraryBranches;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		
+		return null;
+	}
+	
+	
+	@Transactional
+	@RequestMapping(value="/library/readLibraryBranchesByName",method=RequestMethod.GET,produces="application/json")
+	public List<LibraryBranch> readLibraryBranchesByName(@RequestParam String name) throws SQLException
+	{
+			try {
+				List<LibraryBranch> libraryBranches=new ArrayList<LibraryBranch>();
+				
+				if(name.equals("undefined"))
+				{
+					libraryBranches=lbdao.ReadAllLibraryBranches();
+				}
+				else {
+					libraryBranches=lbdao.readBranchesByName(name);
+				}
+				
+				//get the books in the branch
+				for(LibraryBranch branch: libraryBranches)
+				{
+					List<Book> books=bdao.ReadBooksByBranchID(branch.getBranchId());
+					branch.setBooks(books);
+				}
+				
+				
 				return libraryBranches;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();

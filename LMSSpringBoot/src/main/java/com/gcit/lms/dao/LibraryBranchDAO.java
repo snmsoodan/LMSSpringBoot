@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
+import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.LibraryBranch;
 
 @Component
@@ -34,6 +35,13 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> implements ResultSe
 	{
 		
 		return mySqlTemplate.query("select * from tbl_library_branch",this);	
+	}
+	
+	public List<LibraryBranch> readBranchesByName(String name) throws ClassNotFoundException, SQLException
+	{
+		name="%"+name+"%";
+		
+		return mySqlTemplate.query("select * from tbl_library_branch where branchName like ?",new Object[] {name},this);	
 	}
 	
 	

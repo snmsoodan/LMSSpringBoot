@@ -1,0 +1,178 @@
+<div class="container" ng-controller="libraryController">
+
+
+	<h1>List of Library Branches in GCIT LMS</h1>
+	<div class="col-md-4 mb-3">
+		<label for="validationCustomUsername">Search by Branch Names</label>
+		<div class="input-group">
+			<input type="text" class="form-control" id="validationCustomUsername"
+				ng-model="searchString" placeholder="Branch Name"
+				aria-describedby="inputGroupPrepend" required
+				ng-change="searchBranches(searchString)">
+			<div class="invalid-feedback">Please choose a branch name.</div>
+		</div>
+	</div>
+
+	<div class="col-md-10">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.prevPage()">&laquo;</a></li>
+			<li class="page-item"
+				ng-repeat="n in [] | range: pagination.numPages"
+				ng-class="{active: n == pagination.page}"><a class="page-link"
+				href="" ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.nextPage()">&raquo;</a></li>
+		</ul>
+	</div>
+
+	<button class="button pull-right" data-toggle="modal"
+		data-target="#addModal"
+		style="margin-left: 1114px; background-color: orange">
+		<span>Add Branch</span>
+	</button>
+
+	<!-- Modal -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Add Branch</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						Enter Branch Name:<br /> 
+						<input type="text" maxlength="45" ng-model="branchName" > <br /><br />
+						
+						Enter Branch Address:<br /> 
+						<input type="text" maxlength="45" ng-model="branchAddress" > <br /><br />
+						
+						
+
+
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						ng-click="addBranch(branchName,branchAddress)">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<table class="table" style="width: 1300">
+		<thead>
+			<tr class="table-primary">
+				<th scope="col">#</th>
+				<th scope="col">Branch Name</th>
+				<th scope="col">Branch Address</th>
+				<th scope="col">Books</th>
+				<th scope="col">Add/Update Book Copies</th>
+				<th scope="col">Edit</th>
+				<th scope="col">Delete</th>
+			</tr>
+		</thead>
+
+
+
+
+		<tbody>
+
+			<tr
+				ng-repeat="br in branches | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+				<th scope="row">{{$index+1}}</th>
+				<td>{{br.branchName}}</td>
+				<td>{{br.branchAddress}}</td>
+				<td><span ng-repeat="b in br.books"> {{b.title}} <span
+						ng-if="!$last">|</span></span></td>
+				
+				<td><button class="btn btn-primary" data-toggle="modal"
+						data-target="#addBookModal" ng-click="editBranch(br)">Add</button></td>
+						
+				<td><button class="btn btn-primary" data-toggle="modal"
+						data-target="#editModal" ng-click="editBranch(br)">Edit</button></td>
+				
+				<td><button ng-click="deleteBranch(br)" class="btn btn-danger">Delete</button></td>
+			</tr>
+
+		</tbody>
+	</table>
+
+
+
+	<!-- Modal -->
+	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Update Branch Details</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						Enter Branch Name to be edited:<br /> 
+						<input type="text"	maxlength="45" ng-model="branch.branchName"	value="branch.branchName"><br /> <br /> 
+						
+						Enter Branch Address to be edited:<br /> 
+						<input type="text"	maxlength="45" ng-model="branch.branchAddress"	value="branch.branchAddress"><br /> <br /> 
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						ng-click="listBranches()" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="updateBranch()">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="modal fade" id="addBookModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Choose Book to Add</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						
+						Select Book Title<select class="custom-select"
+							name="multipleSelect" id="multipleSelect"
+							ng-model="selectedBooks"
+							ng-options="Title.title for Title in books"></select><br />  <br /> 
+						
+						Enter No. of copies to be added:<br /> 
+						<input type="text"	maxlength="45" ng-model="noOfCopies">
+						
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						ng-click="listBranches()" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="updateBranchBooks(noOfCopies)">Add Book</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
