@@ -64,11 +64,11 @@ public class LibraryService extends BaseController{
 	
 	
 	@Transactional
-	@RequestMapping(value="/library/readBookCopiesById",method=RequestMethod.GET,produces="application/json")
-	public List<BookCopies> readBookCopiesById(@RequestParam("bookId") Integer bookId,@RequestParam("branchId")Integer branchId) throws SQLException
+	@RequestMapping(value="/library/readBookCopiesById",method=RequestMethod.POST,consumes="application/json",produces="application/json")
+	public List<BookCopies> readBookCopiesById(@RequestBody BookCopies bookCopy) throws SQLException
 	{
 			try {
-				List<BookCopies> bookCopies=bcdao.ReadBookCopiesById(bookId, branchId);
+				List<BookCopies> bookCopies=bcdao.ReadBookCopiesById(bookCopy.getBookId(), bookCopy.getBranchId());
 				return bookCopies;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -88,6 +88,21 @@ public class LibraryService extends BaseController{
 			}
 	}
 	
+	@Transactional
+	@RequestMapping(value="/library/updateBookCopies2",method=RequestMethod.PUT,consumes="application/json")
+	public void updateBookCopies2(@RequestBody BookCopies bookCopy) throws SQLException
+	{
+			try {
+				int noOfCopies=bcdao.ReadBookCopiesById(bookCopy.getBookId(), bookCopy.getBranchId()).get(0).getNoOfCopies();
+				System.out.println(noOfCopies);
+				noOfCopies+=1;
+				bookCopy.setNoOfCopies(noOfCopies);
+				
+				bcdao.updateBookCopies(bookCopy);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+	}
 	
 	@Transactional
 	@RequestMapping(value="/library/updateLibraryBranch",method=RequestMethod.PUT,consumes="application/json")
@@ -136,6 +151,14 @@ public class LibraryService extends BaseController{
 				for(LibraryBranch branch: libraryBranches)
 				{
 					List<Book> books=bdao.ReadBooksByBranchID(branch.getBranchId());
+					
+					for(Book book: books)
+					{
+						List<BookCopies> bookCopies=bcdao.ReadBookCopiesById(book.getBookId(), branch.getBranchId());
+						book.setNoOfCopies(bookCopies.get(0).getNoOfCopies());
+					}
+					
+					
 					branch.setBooks(books);
 				}
 				

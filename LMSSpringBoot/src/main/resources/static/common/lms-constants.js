@@ -37,9 +37,20 @@ lmsApp.constant("lmsConstants",{
 	ADD_GENRE: "http://localhost:8080/lms/admin/saveGenre",
 	GET_BOOKS_BY_NAME: "http://localhost:8080/lms/admin/readGenresByName?name=",
 	
+	GET_ALL_LOANS: "http://localhost:8080/lms/admin/readBookLoans",
+	UPDATE_DUE_DATE: "http://localhost:8080/lms/borrower/changeDueDate",
+	GET_LOANS_BY_USERID: "http://localhost:8080/lms/admin/readBookLoansByUserId",
+	
+	GET_LOAN_BY_USER: "http://localhost:8080/lms/borrower/readBookLoanByUser?cardNo=",
+	GET_BORROWER_BY_ID: "http://localhost:8080/lms/borrower/readBorrowerById?cardNo=",
+	RETURN_BOOK_LOAN: "http://localhost:8080/lms/borrower/returnBookLoan",
+	SAVE_BOOK_LOAN: "http://localhost:8080/lms/borrower/saveBookLoan",
+	
 	
 	ADD_BOOK_COPY: "http://localhost:8080/lms/library/saveBookCopy",
 	UPDATE_BOOK_COPY: "http://localhost:8080/lms/library/updateBookCopies",
+	GET_BOOK_COPY_BY_ID: "http://localhost:8080/lms/library/readBookCopiesById",
+	UPDATE_BOOK_COPY2: "http://localhost:8080/lms/library/updateBookCopies2",
 	
 	
 })

@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gcit.lms.dao.AuthorDAO;
 import com.gcit.lms.dao.BookDAO;
 import com.gcit.lms.dao.BookLoansDAO;
+import com.gcit.lms.dao.BorrowerDAO;
 import com.gcit.lms.dao.GenreDAO;
+import com.gcit.lms.dao.LibraryBranchDAO;
 import com.gcit.lms.dao.PublisherDAO;
 import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.BookLoans;
+import com.gcit.lms.entity.Borrower;
 import com.gcit.lms.entity.Genre;
+import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Publisher;
 
 
@@ -41,6 +45,12 @@ public class AdminService extends BaseController {
 	
 	@Autowired
 	BookLoansDAO bldao;
+	
+	@Autowired
+	BorrowerDAO brdao;
+	
+	@Autowired
+	LibraryBranchDAO lbdao;
 	
 	@Transactional
 	@RequestMapping(value="/admin/saveAuthor", method=RequestMethod.POST,consumes="application/json")
@@ -225,6 +235,45 @@ public class AdminService extends BaseController {
 	{
 			try {
 				List<BookLoans> bookLoans=bldao.ReadAllBookLoans();
+				
+				for(BookLoans bookLoan:bookLoans)
+				{
+					List<Book> books=bdao.ReadBooksByBookID(bookLoan.getBookId());
+					bookLoan.setBook(books.get(0));
+					
+					List<Borrower> borrowers=brdao.ReadAllBorrowerById(bookLoan.getCardNo());
+					bookLoan.setBorrower(borrowers.get(0));
+					
+					List<LibraryBranch> libraryBranch=lbdao.ReadLibraryBranchesById(bookLoan.getBranchId());
+					bookLoan.setLibraryBranch(libraryBranch.get(0));
+				}
+			
+				return bookLoans;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	@Transactional
+	@RequestMapping(value="/admin/readBookLoansByUserId",method=RequestMethod.GET,produces="application/json")
+	public List<BookLoans> readBookLoansByUserId(@RequestParam Integer cardNo) throws SQLException
+	{
+			try {
+				List<BookLoans> bookLoans=bldao.ReadBookLoansByUserId(cardNo);
+				
+				for(BookLoans bookLoan:bookLoans)
+				{
+					List<Book> books=bdao.ReadBooksByBookID(bookLoan.getBookId());
+					bookLoan.setBook(books.get(0));
+					
+					List<Borrower> borrowers=brdao.ReadAllBorrowerById(bookLoan.getCardNo());
+					bookLoan.setBorrower(borrowers.get(0));
+					
+					List<LibraryBranch> libraryBranch=lbdao.ReadLibraryBranchesById(bookLoan.getBranchId());
+					bookLoan.setLibraryBranch(libraryBranch.get(0));
+				}
+			
 				return bookLoans;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -233,7 +282,7 @@ public class AdminService extends BaseController {
 	}
 	
 	
-
+	
 	@Transactional
 	@RequestMapping(value="/admin/readGenres",method=RequestMethod.GET,produces="application/json")
 	public List<Genre> readGenre() throws SQLException

@@ -37,6 +37,12 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> implements ResultSe
 		return mySqlTemplate.query("select * from tbl_library_branch",this);	
 	}
 	
+	public List<LibraryBranch> ReadLibraryBranchesById(int branchId) throws ClassNotFoundException, SQLException
+	{
+		
+		return mySqlTemplate.query("select * from tbl_library_branch where branchId=?",new Object[] {branchId},this);	
+	}
+	
 	public List<LibraryBranch> readBranchesByName(String name) throws ClassNotFoundException, SQLException
 	{
 		name="%"+name+"%";

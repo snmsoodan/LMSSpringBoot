@@ -8,7 +8,14 @@ public class Book {
 	private List<Genre> genres;
 	private List<Author> authors;
 	private Publisher publisher;
+	private Integer noOfCopies;
 	
+	public Integer getNoOfCopies() {
+		return noOfCopies;
+	}
+	public void setNoOfCopies(Integer noOfCopies) {
+		this.noOfCopies = noOfCopies;
+	}
 	public List<Genre> getGenres() {
 		return genres;
 	}

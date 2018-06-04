@@ -1,9 +1,14 @@
 package com.gcit.lms.service;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +31,7 @@ import com.gcit.lms.entity.BookCopies;
 import com.gcit.lms.entity.BookLoans;
 import com.gcit.lms.entity.Borrower;
 import com.gcit.lms.entity.Genre;
+import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Publisher;
 
 @RestController
@@ -89,11 +95,24 @@ public class BorrowerService extends BaseController {
 	}
 	
 	@Transactional
-	@RequestMapping(value="/borrower/readBookLoanUserBranch",method=RequestMethod.GET, produces="application/json")
-	public List<BookLoans> ReadBookLoansByUserBranch(@RequestParam("branchId") Integer branchId, @RequestParam("cardNo") Integer cardNo) throws SQLException
+	@RequestMapping(value="/borrower/readBookLoanByUser",method=RequestMethod.GET, produces="application/json")
+	public List<BookLoans> ReadBookLoansByUserBranch(@RequestParam Integer cardNo) throws SQLException
 	{
 			try {
-				List<BookLoans> bookLoans=bldao.ReadBookLoansByUserBranch(branchId, cardNo);
+				List<BookLoans> bookLoans=bldao.ReadBookLoansByUser(cardNo);
+				
+				for(BookLoans bookLoan:bookLoans)
+				{
+					List<Book> books=bdao.ReadBooksByBookID(bookLoan.getBookId());
+					bookLoan.setBook(books.get(0));
+					
+					List<Borrower> borrowers=brdao.ReadAllBorrowerById(bookLoan.getCardNo());
+					bookLoan.setBorrower(borrowers.get(0));
+					
+					List<LibraryBranch> libraryBranch=lbdao.ReadLibraryBranchesById(bookLoan.getBranchId());
+					bookLoan.setLibraryBranch(libraryBranch.get(0));
+				}
+				
 				return bookLoans;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -165,11 +184,32 @@ public class BorrowerService extends BaseController {
 		return null;
 	}
 	
+	
 	@Transactional
-	@RequestMapping(value="/borrower/changeDueDate",method=RequestMethod.PUT, consumes="application/json")
-	public void changeDueDate(@RequestBody BookLoans bookloan) throws SQLException
+	@RequestMapping(value="/borrower/readBorrowerById",method=RequestMethod.GET, produces="application/json")
+	public List<Borrower> readBorrowerById(@RequestParam Integer cardNo) throws SQLException 
 	{
 			try {
+				List<Borrower> borrowers=new ArrayList<Borrower>();
+				
+					borrowers=brdao.ReadAllBorrowerById(cardNo);
+				
+				return borrowers;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	
+	@Transactional
+	@RequestMapping(value="/borrower/changeDueDate",method=RequestMethod.PUT, consumes="application/json")
+	public void changeDueDate(@RequestBody BookLoans bookloan) throws SQLException, ParseException
+	{	
+		
+			try {
+				
+				System.out.println(bookloan.getDueDate());
 				bldao.changeDueDate(bookloan);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();

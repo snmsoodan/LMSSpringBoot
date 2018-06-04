@@ -22,7 +22,7 @@ public class BookLoansDAO extends BaseDAO<BookLoans> implements ResultSetExtract
 	
 	public void returnBookLoans(BookLoans bookLoans) throws ClassNotFoundException, SQLException
 	{
-		mySqlTemplate.update("update tbl_book_loans set dateIn=? where bookId=? and branchId=? and cardNo=?",new Object[] {bookLoans.getDateIn(),bookLoans.getBookId(),bookLoans.getBranchId(),bookLoans.getCardNo()});
+		mySqlTemplate.update("update tbl_book_loans set dateIn=? where bookId=? and branchId=? and cardNo=? and dateOut=?",new Object[] {bookLoans.getDateIn(),bookLoans.getBookId(),bookLoans.getBranchId(),bookLoans.getCardNo(),bookLoans.getDateOut()});
 	}
 	
 	
@@ -32,20 +32,27 @@ public class BookLoansDAO extends BaseDAO<BookLoans> implements ResultSetExtract
 		return mySqlTemplate.query("select * from tbl_book_loans where bookId= ? and branchId= ? and cardNo= ?",new Object[] {bookId,branchId,cardNo},this);	
 	}
 	
-	
-	public List<BookLoans> ReadBookLoansByUserBranch(Integer branchId,Integer cardNo) throws ClassNotFoundException, SQLException
+	public List<BookLoans> ReadBookLoansByUserId(Integer cardNo) throws ClassNotFoundException, SQLException
 	{
 		
-		return mySqlTemplate.query("select * from tbl_book_loans where branchId= ? and cardNo= ? and dateIn is NULL",new Object[] {branchId,cardNo},this);	
+		return mySqlTemplate.query("select * from tbl_book_loans where cardNo= ?",new Object[] {cardNo},this);	
+	}
+	
+	
+	public List<BookLoans> ReadBookLoansByUser(Integer cardNo) throws ClassNotFoundException, SQLException
+	{
+		
+		return mySqlTemplate.query("select * from tbl_book_loans where cardNo= ? and dateIn is NULL",new Object[] {cardNo},this);	
 	}
 	
 	public List<BookLoans> ReadAllBookLoans() throws ClassNotFoundException, SQLException
 	{
-		return mySqlTemplate.query("select * from tbl_book_loans ",this);	
+		return mySqlTemplate.query("select * from tbl_book_loans where dateIn is null;",this);	
 	}
 	
 	public void changeDueDate(BookLoans bookLoan) throws ClassNotFoundException, SQLException
 	{
+//		System.out.println(bookLoan.getDueDate());
 		mySqlTemplate.update("update tbl_book_loans set dueDate=? where bookId=? and branchId=? and cardNo=?",new Object[] {bookLoan.getDueDate(),bookLoan.getBookId(),bookLoan.getBranchId(),bookLoan.getCardNo()});
 	}
 
@@ -58,9 +65,14 @@ public class BookLoansDAO extends BaseDAO<BookLoans> implements ResultSetExtract
 			bookLoan.setBookId(rs.getInt("bookId"));
 			bookLoan.setBranchId(rs.getInt("branchId"));
 			bookLoan.setCardNo(rs.getInt("cardNo"));
-			bookLoan.setDateOut(rs.getDate("dateOut"));
-			bookLoan.setDueDate(rs.getDate("dueDate"));
-			bookLoan.setDateIn(rs.getDate("dateIn"));
+			bookLoan.setDateOut(rs.getString("dateOut"));
+			bookLoan.setDueDate(rs.getString("dueDate"));
+			bookLoan.setDateIn(rs.getString("dateIn"));
+			
+			
+//			bookLoan.setDateOut(rs.getDate("dateOut"));
+//			bookLoan.setDueDate(rs.getDate("dueDate"));
+//			bookLoan.setDateIn(rs.getDate("dateIn"));
 			
 			bookLoans.add(bookLoan);
 		}

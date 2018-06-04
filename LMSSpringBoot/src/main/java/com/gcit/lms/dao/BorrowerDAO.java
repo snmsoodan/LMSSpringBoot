@@ -36,6 +36,12 @@ public class BorrowerDAO extends BaseDAO<Borrower> implements ResultSetExtractor
 		return mySqlTemplate.query("select * from tbl_borrower",this);	
 	}
 	
+	public List<Borrower> ReadAllBorrowerById(int cardNo) throws ClassNotFoundException, SQLException
+	{
+		
+		return mySqlTemplate.query("select * from tbl_borrower where cardNo=?",new Object[] {cardNo},this);	
+	}
+	
 	public List<Borrower> ReadBorrowersByName(String name) throws ClassNotFoundException, SQLException
 	{
 		name="%"+name+"%";

@@ -3,7 +3,7 @@
       <p class="lead">online portal for Admin, Librarian and Borrower for easy access to Library Tools and Management.</p>
 </div>
 
-<div class="container">
+<div class="container" ng-controller="homeController">
     
     
     	
@@ -52,9 +52,44 @@
               <li>Return a Book</li>
             </ul> 
             
-            <a style="position:relative;bottom:-74px;" class="btn btn-lg btn-block btn-outline-primary" href="#" role="button">Select</a>
+            <button type="button" style="position:relative;bottom:-74px;" data-toggle="modal" data-target="#editModal"
+            class="btn btn-lg btn-block btn-outline-primary" >Select</button>
           </div>
         </div>
+        
+        
+        	<!-- Modal -->
+	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Borrower Login</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+					<div ng-show="error" class="alert alert-danger" role="alert">{{error}}</div>
+						Enter Card No<br /> 
+						<input type="text" maxlength="45" ng-model="cardNo">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" ng-click="readBookLoanByUser(cardNo)" data-dismiss="modal">Login</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+        
+        
+        
+        
+        
       </div>
 
      

@@ -1,15 +1,19 @@
 package com.gcit.lms.entity;
 
-import java.util.Date;
+
 
 public class BookLoans {
 	
 	private Integer bookId;
 	private Integer branchId;
 	private Integer cardNo;
-	private Date dateOut;
-	private Date dueDate;
-	private Date dateIn;
+	private String dateOut;
+	private String dueDate;
+	private String dateIn;
+	
+	private Book book;
+	private Borrower borrower;
+	private LibraryBranch libraryBranch;
 	public Integer getBookId() {
 		return bookId;
 	}
@@ -28,26 +32,47 @@ public class BookLoans {
 	public void setCardNo(Integer cardNo) {
 		this.cardNo = cardNo;
 	}
-	public Date getDateOut() {
+	public String getDateOut() {
 		return dateOut;
 	}
-	public void setDateOut(Date dateOut) {
+	public void setDateOut(String dateOut) {
 		this.dateOut = dateOut;
 	}
-	public Date getDueDate() {
+	public String getDueDate() {
 		return dueDate;
 	}
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(String dueDate) {
 		this.dueDate = dueDate;
 	}
-	public Date getDateIn() {
+	public String getDateIn() {
 		return dateIn;
 	}
-	public void setDateIn(Date dateIn) {
+	public void setDateIn(String dateIn) {
 		this.dateIn = dateIn;
 	}
-
+	public Book getBook() {
+		return book;
+	}
+	public void setBook(Book book) {
+		this.book = book;
+	}
+	public Borrower getBorrower() {
+		return borrower;
+	}
+	public void setBorrower(Borrower borrower) {
+		this.borrower = borrower;
+	}
+	public LibraryBranch getLibraryBranch() {
+		return libraryBranch;
+	}
+	public void setLibraryBranch(LibraryBranch libraryBranch) {
+		this.libraryBranch = libraryBranch;
+	}
 	
+	
+	
+	
+
 	
 	
 	

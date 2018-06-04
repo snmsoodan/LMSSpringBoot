@@ -1,0 +1,59 @@
+<div class="container" ng-controller="bookLoanController">
+
+
+	<h1>List of BookLoans in GCIT LMS</h1>
+
+	<div class="col-md-10">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.prevPage()">&laquo;</a></li>
+			<li class="page-item"
+				ng-repeat="n in [] | range: pagination.numPages"
+				ng-class="{active: n == pagination.page}"><a class="page-link"
+				href="" ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.nextPage()">&raquo;</a></li>
+		</ul>
+	</div>
+
+
+	<table class="table" style="width: 1300">
+		<thead>
+			<tr class="table-primary">
+				<th scope="col">#</th>
+				<th scope="col">Borrower Name</th>
+				<th scope="col">Branch Name</th>
+				<th scope="col">Book Name</th>
+				<th scope="col">DueDate</th>
+				<th scope="col">Edit Due Date</th>
+			</tr>
+		</thead>
+
+
+
+
+		<tbody>
+
+			<tr
+				ng-repeat="l in loans | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+				<th scope="row">{{$index+1}}</th>
+				<td>{{l.borrower.name}}</td>
+				<td>{{l.libraryBranch.branchName}}</td>
+				<td>{{l.book.title}}</td>
+				<td>{{l.dueDate}}</td>
+
+
+				<td>
+					 <input type="date" name="dueDate" min={{currDate}} ng-model="selectedDate.value" ng-change="dateChange(selectedDate)">
+					 
+					 <button type="button" class="btn btn-primary"
+						ng-click="updatedueDate(l)" >Save changes</button> 
+
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+
+
+</div>

@@ -1,0 +1,108 @@
+<div class="container" ng-controller="libraryBranchBorrowerController">
+
+	<h1>Choose one of the Library Branches in GCIT LMS</h1>
+
+<button type="button" class="btn btn-primary" ng-click="returnBook()"
+	style="margin-left: 1114px; background-color: orange" >View Loans</button> 
+
+
+	<div class="col-md-10">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.prevPage()">&laquo;</a></li>
+			<li class="page-item"
+				ng-repeat="n in [] | range: pagination.numPages"
+				ng-class="{active: n == pagination.page}"><a class="page-link"
+				href="" ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+			<li class="page-item"><a class="page-link" href=""
+				ng-click="pagination.nextPage()">&raquo;</a></li>
+		</ul>
+	</div>
+
+	<table class="table" style="width: 1300">
+		<thead>
+			<tr class="table-primary">
+				<th scope="col">#</th>
+				<th scope="col">Branch Name</th>
+				<th scope="col">Branch Address</th>
+				<th scope="col">Books</th>
+				<th scope="col">Choose</th>
+			</tr>
+		</thead>
+
+
+
+
+		<tbody>
+
+			<tr
+				ng-repeat="br in branches | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+				<th scope="row">{{$index+1}}</th>
+				<td>{{br.branchName}}</td>
+				<td>{{br.branchAddress}}</td>
+				<td><span ng-repeat="b in br.books"> {{b.title}} <span
+						ng-if="!$last">|</span></span></td>
+				<td><button ng-click="getBooksByBranch(br)"
+						class="btn btn-primary" data-toggle="modal" data-target="#editModal">Choose</button></td>
+			</tr>
+
+		</tbody>
+	</table>
+
+
+
+	<!-- Modal -->
+	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Choose a
+						book to checkout</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+					
+						<table class="table">
+							<thead>
+								<tr class="table-primary">
+									<th scope="col">#</th>
+									<th scope="col">Book Title</th>
+									<th scope="col">CheckOut</th>
+								</tr>
+							</thead>
+
+
+
+
+							<tbody>
+
+								<tr ng-repeat="book in branch.books ">
+									<th scope="row">{{$index+1}}</th>
+									<td>{{book.title}}</td>
+									
+									<td ng-if="book.noOfCopies!=0"><button ng-click="CheckOutBook(book)" class="btn btn-primary" data-dismiss="modal" >CheckOut</button></td>
+									<td ng-if="book.noOfCopies==0"><button ng-click="CheckOutBook(book)" class="btn btn-primary" data-dismiss="modal" disabled>CheckOut</button></td>
+								</tr>
+
+							</tbody>
+						</table>
+
+
+
+
+
+
+
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>    
+
+</div>
